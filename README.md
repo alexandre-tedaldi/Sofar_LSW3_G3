@@ -254,3 +254,59 @@ Steps to run InfluxDB+Grafana support:
     Important: From version 1.9 the script requires InfluxDB v2.x
 ```
 Enjoy :)
+
+# Docker Support
+
+A Docker container is available to run `InverterData.py` in a loop (every 60 seconds) and serve Prometheus metrics via an embedded nginx on port 9100.
+
+## How it works
+
+- The container starts nginx to serve the metrics file at `http://<host>:9100/index.html`
+- A loop executes `InverterData.py` every 60 seconds, updating the metrics file
+- Prometheus scrapes the metrics endpoint on the configured interval
+- `config.cfg` is mounted as a volume so you can edit it without rebuilding the image
+
+## Build and run locally
+
+```bash
+docker compose up -d --build
+```
+
+## Build and push to Docker Hub
+
+```bash
+docker login
+docker build -t YOUR_USER/sofar-inverter:latest .
+docker push YOUR_USER/sofar-inverter:latest
+```
+
+## Run from Docker Hub
+
+```bash
+docker run -d --name sofar-inverter \
+  -p 9100:9100 \
+  -v $(pwd)/config.cfg:/app/config.cfg \
+  --restart unless-stopped \
+  YOUR_USER/sofar-inverter:latest
+```
+
+## config.cfg requirements
+
+Make sure the following is set in your `config.cfg`:
+
+```ini
+[Prometheus]
+prometheus=1
+prometheus_file=/app/metrics/index.html
+```
+
+## Prometheus scrape config
+
+Add the following target to your `prometheus.yml`:
+
+```yaml
+scrape_configs:
+  - job_name: 'sofar_inverter'
+    static_configs:
+      - targets: ['<DOCKER_HOST_IP>:9100']
+```

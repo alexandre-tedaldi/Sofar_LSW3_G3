@@ -13,7 +13,8 @@ import json
 import paho.mqtt.client as paho
 import os
 import configparser
-from datetime import datetime
+from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 
 def twosComplement_hex(hexval, reg):
   if hexval=="" or (" " in hexval):
@@ -94,8 +95,9 @@ HomeAssistantSupport=configParser.get('HomeAssistant', 'homeassistant_support')
 ha_mqtt_topic=configParser.get('HomeAssistant', 'ha_mqtt_topic')
 # END CONFIG
 
-timestamp=str(datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'))
-localtimestamp=str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+SP_TZ = ZoneInfo(configParser.get('SofarInverter', 'timezone'))
+timestamp=str(datetime.now(SP_TZ).strftime('%Y-%m-%d %H:%M:%S'))
+localtimestamp=str(datetime.now(SP_TZ).strftime('%Y-%m-%d %H:%M:%S'))
 
 logfile = open(config_logfile, "a")
 

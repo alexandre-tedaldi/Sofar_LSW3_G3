@@ -87,7 +87,6 @@ for res in socket.getaddrinfo(inverter_ip, inverter_port, socket.AF_INET, socket
                   clientSocket.connect(sockadress);
                  except socket.error as msg:
                   print("Could not open socket - inverter/logger turned off");
-                  if prometheus=="1": prometheus_file.close();
                   sys.exit(1)
 
 # SEND DATA

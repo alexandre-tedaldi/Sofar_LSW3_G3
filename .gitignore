@@ -1,2 +1,3 @@
 venv/
 InverterData.log
+__pycache__/

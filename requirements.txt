@@ -1,4 +1,3 @@
 libscrc
 paho-mqtt
 influxdb
-influxdb-client

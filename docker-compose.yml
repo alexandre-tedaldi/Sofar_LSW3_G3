@@ -1,0 +1,9 @@
+services:
+  sofar-inverter:
+    build: .
+    container_name: sofar-inverter
+    restart: unless-stopped
+    ports:
+      - "9100:9100"
+    volumes:
+      - ./config.cfg:/app/config.cfg
