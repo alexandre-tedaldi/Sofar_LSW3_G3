@@ -9,7 +9,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Nginx serves the metrics file
-RUN echo 'server { listen 9100; root /app/metrics; location / { index index.html; try_files $uri $uri/ /index.html; } }' > /etc/nginx/sites-available/default
+RUN echo 'server { listen 9100; root /app/metrics; location / { types {} default_type text/plain; index index.html; try_files $uri $uri/ /index.html; } }' > /etc/nginx/sites-available/default
 
 RUN mkdir -p /app/metrics && echo "" > /app/metrics/index.html
 
