@@ -121,6 +121,7 @@ output="{" # initialise json output
 chunks=0
 totalpower=0
 totaltime=0
+multi_reg_high={}
 PMData=[]
 DomoticzData=[]
 HomeAssistantData=[]
@@ -226,9 +227,22 @@ if invstatus==1:
             label_value=item["label_value"]
             metric_type=item["metric_type"]
             DomoticzIdx=item["DomoticzIdx"]
-            for register in item["registers"]:
+            registers_list=item["registers"]
+            for register in registers_list:
               if register==hexpos and chunks!=-1:
                 response=round(response*ratio,2)
+                # For multi-register values: first register is high word, skip export
+                if len(registers_list) > 1 and register == registers_list[0]:
+                  if hexpos not in multi_reg_high:
+                    multi_reg_high[hexpos] = {}
+                  multi_reg_high[hexpos][item["metric_name"]+item["label_value"]] = response
+                  break
+                # For multi-register values: second register combines with high word
+                if len(registers_list) > 1 and register == registers_list[1]:
+                  high_reg = registers_list[0]
+                  high_key = item["metric_name"]+item["label_value"]
+                  if high_reg in multi_reg_high and high_key in multi_reg_high[high_reg]:
+                    response = multi_reg_high[high_reg][high_key] * 65536 + response
                 for option in item["optionRanges"]:
                   if option["key"] == response:
                     if label_name=="Status":
