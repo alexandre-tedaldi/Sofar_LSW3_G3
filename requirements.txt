@@ -1,3 +1,5 @@
 libscrc
 paho-mqtt
 influxdb
+requests
+python-snappy

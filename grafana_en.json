@@ -1059,6 +1059,442 @@
       ],
       "title": "Insulation to ground",
       "type": "timeseries"
+    },
+    {
+      "title": "PV Total Power",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 41
+      },
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "unit": "kwatt",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "expr": "SolarPower{Power=\"Total\"}",
+          "legendFormat": "PV Total",
+          "refId": "A"
+        },
+        {
+          "expr": "SolarPower{Power=\"PV1\"}",
+          "legendFormat": "PV1",
+          "refId": "B"
+        },
+        {
+          "expr": "SolarPower{Power=\"PV2\"}",
+          "legendFormat": "PV2",
+          "refId": "C"
+        }
+      ]
+    },
+    {
+      "title": "Grid Power (PCC)",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 41
+      },
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "unit": "kwatt",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "expr": "PCCPower_watts{Power=\"ActiveTotal\"}",
+          "legendFormat": "PCC Active Power",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "title": "System Load Power",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 49
+      },
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "unit": "kwatt",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "orange"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "expr": "LoadPower_watts{Power=\"SystemTotal\"}",
+          "legendFormat": "System Load",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "title": "Apparent Power & Power Factor",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 49
+      },
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Power Factor"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Apparent Power"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kwatt"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "expr": "OutputPower_watts{Power=\"Apparent\"}",
+          "legendFormat": "Apparent Power",
+          "refId": "A"
+        },
+        {
+          "expr": "OutputPowerFactor{PowerFactor=\"R\"}",
+          "legendFormat": "Power Factor",
+          "refId": "B"
+        }
+      ]
+    },
+    {
+      "title": "Energy Purchase vs Selling (today)",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 57
+      },
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "unit": "kwatth",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "expr": "EnergyPurchase_kwh{Purchase=\"Today\"}",
+          "legendFormat": "Purchased Today",
+          "refId": "A"
+        },
+        {
+          "expr": "EnergySelling_kwh{Selling=\"Today\"}",
+          "legendFormat": "Sold Today",
+          "refId": "B"
+        }
+      ]
+    },
+    {
+      "title": "Energy Balance (totals)",
+      "type": "stat",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 57
+      },
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "unit": "kwatth",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "textMode": "auto",
+        "colorMode": "value"
+      },
+      "targets": [
+        {
+          "expr": "EnergyPurchase_kwh{Purchase=\"Total\"}",
+          "legendFormat": "Total Purchased",
+          "refId": "A"
+        },
+        {
+          "expr": "EnergySelling_kwh{Selling=\"Total\"}",
+          "legendFormat": "Total Sold",
+          "refId": "B"
+        }
+      ]
+    },
+    {
+      "title": "Leak Current",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 65
+      },
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "unit": "mamp",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "red"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "expr": "InverterLeakCurrent_mA{Current=\"Leak\"}",
+          "legendFormat": "Leak Current",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "title": "Bus Voltages",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 65
+      },
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "unit": "volt",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "expr": "InverterVoltage_volts{Voltage=\"Bus\"}",
+          "legendFormat": "Bus Total",
+          "refId": "A"
+        },
+        {
+          "expr": "InverterVoltage_volts{Voltage=\"BusPositive\"}",
+          "legendFormat": "Bus +",
+          "refId": "B"
+        },
+        {
+          "expr": "InverterVoltage_volts{Voltage=\"BusNegative\"}",
+          "legendFormat": "Bus -",
+          "refId": "C"
+        }
+      ]
+    },
+    {
+      "title": "Load Consumption Today",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 73
+      },
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "unit": "kwatth",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "purple"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "expr": "LoadConsumption_kwh{Consumption=\"Today\"}",
+          "legendFormat": "Consumption Today",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "title": "Running Time",
+      "type": "stat",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 73
+      },
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "unit": "h",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "textMode": "auto",
+        "colorMode": "value"
+      },
+      "targets": [
+        {
+          "expr": "SolarTime{RunningTime=\"Total\"} / 60",
+          "legendFormat": "Total Running Hours",
+          "refId": "A"
+        }
+      ]
     }
   ],
   "refresh": "1m",
@@ -1076,5 +1512,5 @@
   "timezone": "",
   "title": "PV Monitor",
   "uid": "53xh9vgAB",
-  "version": 1 
+  "version": 1
 }
